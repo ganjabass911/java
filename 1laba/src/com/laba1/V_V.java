@@ -3,26 +3,26 @@ package com.laba1;
 import java.util.Random;
 
 public class V_V {
-    private static final int size = 10000000;
-    public static int[]  f1,f2 = new int[size];
-    public static int fps=0;
+    private  final int size = 10000000;
+    private int[] f1= new int[size];
+    private int[] f2 = new int[size];
+    private int fps=0;
 
-    public static void my_function(int i){
+    private   void my_function(int i){
         fps+=f1[i]*f2[i];
     }
 
-    public static void start() {
+    public  void start() {
 
 
-// Инициализируем генератор
+        // Инициализируем генератор
         Random rnd = new Random(System.currentTimeMillis());
         // Получаем случайное число в диапазоне от min до max (включительно)
-
         for (int i = 0; i < size; i++) {
             f1[i] = ((-size) + rnd.nextInt(size - (-size) + 1));
             f2[i] = ((-size) + rnd.nextInt(size - (-size) + 1));
         }
-
+        // КОЛИЧЕСТВО ПОТОков от 1 до 10
         for (int j = 0; j < 10; j++) {
             int colThread = j + 1;
 //        System.out.print("Write the quantity of threads: ");
@@ -74,7 +74,7 @@ public class V_V {
         }
     }
 
-    public static class ThreadVV extends Thread {
+    private   class ThreadVV extends Thread {
         private volatile int nk1, nk2;
 
         public void setN1(int n1) {

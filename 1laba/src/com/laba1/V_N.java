@@ -1,18 +1,18 @@
 package com.laba1;
-
+//Произведние вектора на число.
 public class V_N {
-    public static int x;
-    public static int[]  f = new int[10000000];
+    private  final int size = 10600000;
+    private   long x=5458;
+    private long []  f = new long[size];
 
 
 
-    public static void start() {
-        x = 5;
-
-        for (int i = 0; i < 10000000; i++) {
-            f[i] = (int) Math.round((Math.random() * 30) - 15);
-
+    public  void start() {
+// Реализация исходного вектора
+        for (int i = 0; i < size; i++) {
+            f[i] = (int) Math.round((Math.random() * size) - size);
         }
+        //выбираем дапозон количества потоков от 1 до 10
         for (int j = 0; j < 10; j++) {
             int colThread = j + 1;
 
@@ -24,11 +24,11 @@ public class V_N {
 // 2. Расчет итераций на поток
             int[] n = new int[colThread + 1];
             n[0] = 0;
-            n[1] = (int) (10000000 % (colThread + 1));
+            n[1] = (int) (size % (colThread + 1));
             for (int i = 2; i < (colThread + 1); i++) {
-                n[i] = n[i - 1] + (int) (10000000 % (colThread + 1));
+                n[i] = n[i - 1] + (int) (size % (colThread + 1));
             }
-
+            //ставим таймер
             long timeMillis = System.currentTimeMillis();
 // 2,5. инициализация потока с определенным интервалом
             ThreadVN t[] = new ThreadVN[colThread];
@@ -39,8 +39,6 @@ public class V_N {
                 t[i] = new ThreadVN();
                 t[i].setN1(n[i]);
                 t[i].setN2(n[i + 1]);
-                t[i].setF(f);
-                t[i].setX(x);
             }
 
             for (int i = 0; i < colThread; i++) {
@@ -62,8 +60,10 @@ public class V_N {
             System.out.println(colThread+" thread(s). Time: " + (System.currentTimeMillis() - timeMillis) + " ms");
         }
     }
-    public static class ThreadVN extends Thread {
-        private volatile int n1, n2, x, f[];
+
+    //сам клас потоков
+    private class ThreadVN extends Thread {
+        private volatile int n1, n2;
     
         public void setN1(int n1) {
             this.n1 = n1;
@@ -73,17 +73,9 @@ public class V_N {
             this.n2 = n2;
         }
     
-        public void setX(int x) {
-            this.x = x;
-        }
-    
-        public void setF(int[] f) {
-            this.f = f;
-        }
-    
         public void run() {
             for (int i = n1; i < n2; i++) {
-                this.f[i]*=this.x;
+                f[i]*=x;
             }
         }
     

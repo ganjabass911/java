@@ -1,29 +1,29 @@
 package com.laba1;
 
 public class M_V {
-    private static final int size = 10000;
-    public static int[]  f1,it_result = new int[size];
-    public static int[][] f2 = new int[size][size];
+    private final int size = 10000;
+    private int[]   f1 = new int[size];
+    private int[]   it_result = new int[size];
+    private int[][] f2 = new int[size][size];
 
 
-    public static void my_function(int i,int j){
+    private void my_function(int i,int j){
         it_result[i]+=f1[j]*f2[i][j];
     }
 
-    public static int my_random(){
-        int rnd = (int) (Math.random()*size)-size ;
-        return rnd;
+    private int my_random(){
+        return  ((int) (Math.random()*size)-size );
     }
 
-    public static void start() {
-
+    public void start() {
+//зополение матрицы и вектора
         for (int i = 0; i < size; i++) {
             f1[i] = my_random();
-            for (int j = 0; j<size; i++) {
-                f2[i][j] =my_random();
+            for (int j = 0; j<size; j++) {
+                f2[i][j] = my_random();
             }
         }
-
+//количесвто потоков от 1 до 10
         for (int j = 0; j < 10; j++) {
             int colThread = j + 1;
 //        System.out.print("Write the quantity of threads: ");
@@ -38,7 +38,7 @@ public class M_V {
             for (int i = 2; i < (colThread + 1); i++) {
                 n[i] = n[i - 1] + (int) (size % (colThread + 1));
             }
-
+//старт таймера
             long timeMillis = System.currentTimeMillis();
 // 2,5. инициализация потока с определенным интервалом
             ThreadMV t[] = new ThreadMV[colThread];
@@ -69,13 +69,13 @@ public class M_V {
                 }
             }
             System.currentTimeMillis();
-
+//вывод результата таймера
             System.out.println(colThread+" thread(s). Time: " + (System.currentTimeMillis() - timeMillis) + " ms");
 
         }
     }
 
-    public static class ThreadMV extends Thread {
+    private class ThreadMV extends Thread {
         private volatile int nk1, nk2;
 
         public void setN1(int n1) {

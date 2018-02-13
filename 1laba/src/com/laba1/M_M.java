@@ -1,28 +1,29 @@
 package com.laba1;
 
 public class M_M {
-    private static final int size = 10000;
-    public static int[][] f2,f1,it_result = new int[size][size];
+    private static final int size = 1000;
+    private int[][] f1 = new int[size][size];
+    private int[][] f2 = new int[size][size];
+    private int[][] it_result = new int[size][size];
 
-
-    public static void my_function(int inner, int i,int j){
+//выполняем расчет для матрицы результата
+    public  void my_function(int inner, int i,int j){
         it_result[inner][i]+=f1[inner][j]*f2[j][i];
     }
 
-    public static int my_random(){
-        int rnd = (int) (Math.random()*size)-size ;
-        return rnd;
+    public  int my_random(){
+        return  (int) (Math.random()*size)-size ;
     }
 
-    public static void start() {
-
+    public void start() {
+//заполняем матрицы
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j<size; i++) {
+            for (int j = 0; j<size; j++) {
                 f2[i][j] =my_random();
                 f1[i][j] = my_random();
             }
         }
-
+//количество потоков
         for (int j = 0; j < 10; j++) {
             int colThread = j + 1;
 //        System.out.print("Write the quantity of threads: ");
@@ -37,7 +38,7 @@ public class M_M {
             for (int i = 2; i < (colThread + 1); i++) {
                 n[i] = n[i - 1] + (int) (size % (colThread + 1));
             }
-
+//старт таймера
             long timeMillis = System.currentTimeMillis();
 // 2,5. инициализация потока с определенным интервалом
             ThreadMM t[] = new ThreadMM[colThread];
@@ -68,13 +69,13 @@ public class M_M {
                 }
             }
             System.currentTimeMillis();
-
+//вывод результата времени затраченнного на вполнение задачи  colThread потоками
             System.out.println(colThread+" thread(s). Time: " + (System.currentTimeMillis() - timeMillis) + " ms");
 
         }
     }
-
-    public static class ThreadMM extends Thread {
+//поток
+    private   class ThreadMM extends Thread {
         private volatile int nk1, nk2;
 
         public void setN1(int n1) {
